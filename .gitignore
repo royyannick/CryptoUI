@@ -130,3 +130,6 @@ dmypy.json
 
 # Config Files with API Keys
 settings.py
+
+# DS_Store file on Mac
+*DS_Store
