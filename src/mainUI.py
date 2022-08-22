@@ -589,9 +589,3 @@ if __name__ == '__main__':
 # - What are the 'Key Functions' such a class should implement?
 # - Waht are the 'Key Signals' such a class should "throw"
 # Make Ethereum class and then the others derive 'as is' that class.
-
-# TODO Small bug in Avax with wETH ? (I have 1 0.995, but should be 0.0995?)
-# TODO Fix bug change API when token already selected
-# TODO Add Buy vs Sell colors in DF?
-# TODO Add tab, with graphs, frequency of buying...
-# TODO Add tab, with graph poocoin style. all transaction mapped on historic price of token!

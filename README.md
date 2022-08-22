@@ -26,14 +26,33 @@ While the UI is doing an API Call the window is disabled and a waiting animation
 ![Example - API Waiting Animation](./img/UI%20Examples/API_WaitingAnimation.png?raw=true "API Waiting Animation")
 
 ---
+## How To Use:
+
+1. Clone the Repo.
+2. Install PyQt5.
+3. Install Matplotlib.
+4. Install the requirements (pip install -r requirements.txt, you know the drill).
+5. Create a settings.py file in ./src/ with the following constants:
+ETHEREUM_EXPLORER_API_KEY = '[INSERT_YOUR_API_KEY]'
+POLYGON_EXPLORER_API_KEY = '[INSERT_YOUR_API_KEY]'
+AVALANCHE_EXPLORER_API_KEY = '[INSERT_YOUR_API_KEY]'
+BSC_EXPLORER_API_KEY = '[INSERT_YOUR_API_KEY]'
+CARDANO_EXPLORER_API_KEY = '[INSERT_YOUR_API_KEY]'
+
+WALLET_ETH_MAIN = '[INSERT_YOUR_MAIN_WALLET]'
+
+---
 
 ## TODOs:
 
 ### Top 5 Priority
 1) Refactor in multiple python files.
+2) Add Buy (in) vs Sell (out) in Transactions DF/View.
+3) Add Transactions on Price History graph. (PooCoin style)
 
 ### Others
-* Add Queue
+* Add Queue for API Calls. (not a priority since the window is disabled for now)
+# Small bug in Avax with wETH ? (I have 1 0.995, but should be 0.0995?)
 
 ---
 
