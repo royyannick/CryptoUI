@@ -168,7 +168,7 @@ class Window(QWidget):
         self.walletTxt.textChanged.connect(self.changeWallet)
 
         self.blockchainCB = QComboBox(self)
-        self.blockchainCB.addItems(["Ethereum", "Binance (BSC)", "Polygon", "Avalanche", "Solana"])
+        self.blockchainCB.addItems(["Ethereum", "Binance (BSC)", "Polygon", "Avalanche", "Cardano", "Solana"])
         self.blockchainCB.activated.connect(self.changeChain)
         self.currencyLabel = QLabel("&Currency:")
         self.currencyLabel.setBuddy(self.blockchainCB)
@@ -227,7 +227,7 @@ class Window(QWidget):
         self.setLayout(grid)
 
         # Singleton - 1 API owned by the window, not the best design but will do for now.
-        self.api = ExplorerAPI(chain='Ethereum')
+        self.api = ExplorerAPI()
         self.api.updateBalance.connect(self.updateBalance)
         self.api.updateTokens.connect(self.updateTokens)
         self.api.updateTransactions.connect(self.updateTransactions)
@@ -268,20 +268,23 @@ class Window(QWidget):
 
         #self.balanceLabel.setText('You Current Balance on {} is {:.3f}'.format(chain, balance))
     def updateTransactions(self, transactions):
-        # Convert to real values (based on Token Decimal)
-        qty = [f'{val[:-int(dec)]}.{val[-int(dec):]}' for val,dec in zip(transactions.value, transactions.tokenDecimal)]
-        # Keep only 3 decimals.
-        qty = [x[:x.rfind('.') + 4] for x in qty]
-        # Add a 0 to avoid starting with . (i.e. 0.542 instead of .542)
-        qty = [f'0{x}' if x[0]=='.' else x for x in qty]
-        transactions['qty'] = qty
+        if self.api.getChain().lower() != 'cardano':
+            # Convert to real values (based on Token Decimal)
+            qty = [f'{val[:-int(dec)]}.{val[-int(dec):]}' for val,dec in zip(transactions.value, transactions.tokenDecimal)]
+            # Keep only 3 decimals.
+            qty = [x[:x.rfind('.') + 4] for x in qty]
+            # Add a 0 to avoid starting with . (i.e. 0.542 instead of .542)
+            qty = [f'0{x}' if x[0]=='.' else x for x in qty]
+            transactions['qty'] = qty
 
-        # Convert timestamp to Human DateTime Format.
-        transactions['datetime'] = transactions['timeStamp'].apply(lambda x: datetime.datetime.fromtimestamp(int(x)).astimezone(pytz.timezone('America/Montreal')))
-        #transactions['type'] = 'N/A'
-        transactions['type'] = transactions['to'].apply(lambda x: 'In' if str(x).lower() == str(self.api.getWallet()).lower() else 'Out')
+            # Convert timestamp to Human DateTime Format.
+            transactions['datetime'] = transactions['timeStamp'].apply(lambda x: datetime.datetime.fromtimestamp(int(x)).astimezone(pytz.timezone('America/Montreal')))
+            #transactions['type'] = 'N/A'
+            transactions['type'] = transactions['to'].apply(lambda x: 'In' if str(x).lower() == str(self.api.getWallet()).lower() else 'Out')
 
-        self.transactions = transactions[['datetime', 'tokenSymbol', 'tokenName', 'qty', 'hash', 'type', 'to', 'from']]
+            self.transactions = transactions[['datetime', 'tokenSymbol', 'tokenName', 'qty', 'hash', 'type', 'to', 'from']]
+        else:
+            self.transactions = transactions
 
         dfmodel = pandasModel(self.transactions)
         self.tabTransactions.dfView.setModel(dfmodel)
@@ -316,8 +319,11 @@ class Window(QWidget):
         self.loadingAnimation.startAnimation()
 
     def openTransactionWeb(self, index):
-        tx_url = f'{self.api.api_explorer}/tx/{index.data()}'
-        print(tx_url)
+        if self.api.chain.lower() == 'cardano':
+            tx_url = f'{self.api.getExplorer()}/transaction/{index.data()}'
+        else:    
+            tx_url = f'{self.api.getExplorer()}/tx/{index.data()}'
+        #print(tx_url)
         os.system(f"open \"\" {tx_url}")
 
     def refreshTransationsForToken(self, index):

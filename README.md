@@ -7,7 +7,7 @@ Supported Chains:
 * Polygon
 * Avalanche
 * Binance Smart Chain
-* Cardano (work in progress)
+* Cardano
 * Solana (coming soon)
 
 ---
@@ -19,8 +19,11 @@ Here is an example of the Tokens and the Transactions from a Specific Wallet on 
 Here we narrow down the transactions for a specific Token (PooCoin for the memes).
 ![Example - Token Transactions](./img/UI%20Examples/Token_Transactions.png?raw=true "Token Transactions (for Specific Wallet)")
 
-Here we look at the Price History of PooCoin over the last 2 years.
+Here we look at the Price History of PooCoin.
 ![Example - Price History](./img/UI%20Examples/Token_PriceHistory.png?raw=true "Token Price History")
+
+Here we look at the Price History of Cake (Pancake Swap) with the transactions (In/Out).
+![Example - Price History and Tx](./img/UI%20Examples/Token_PriceAndTransactions.png?raw=true "Token Price History with Tx")
 
 While the UI is doing an API Call the window is disabled and a waiting animation is triggered to make it nice :)
 ![Example - API Waiting Animation](./img/UI%20Examples/API_WaitingAnimation.png?raw=true "API Waiting Animation")
@@ -40,19 +43,14 @@ BSC_EXPLORER_API_KEY = '[INSERT_YOUR_API_KEY]'
 CARDANO_EXPLORER_API_KEY = '[INSERT_YOUR_API_KEY]'
 
 WALLET_ETH_MAIN = '[INSERT_YOUR_MAIN_WALLET]'
+WALLET_CARDANO_MAIN = '[INSERT_YOUR_MAIN_CARDANO_WALLET]'
 
 ---
 
 ## TODOs:
-
-### Top 5 Priority
-1) Refactor in multiple python files.
-2) Add Buy (in) vs Sell (out) in Transactions DF/View.
-3) Add Transactions on Price History graph. (PooCoin style)
-
-### Others
 * Add Queue for API Calls. (not a priority since the window is disabled for now)
-# Small bug in Avax with wETH ? (I have 1 0.995, but should be 0.0995?)
+* Small bug in Avax with wETH ? (I have 1 0.995, but should be 0.0995?)
+* Speed up Cardano fetching. Can I batch calls and parse after? (maybe fetching all unit ID? how many projects could there be...)
 
 ---
 
